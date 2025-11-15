@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">pestyNotify</string>
+    <string name="buttonPlanNotifyText">Create remainder</string>
+    <string name="buttonCancelNotifyText">Cancel remainder</string>
+    <string name="timerValueHint">Timer (sec)</string>
+    <string name="reminderHint">Reminder text</string>
 </resources>

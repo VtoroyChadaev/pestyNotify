@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -15,5 +16,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editReminderText"
+        android:inputType="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/reminderHint"
+        app:layout_constraintEnd_toEndOf="@id/editTimerValue"
+        app:layout_constraintStart_toStartOf="@id/editTimerValue"
+        app:layout_constraintBottom_toTopOf="@id/editTimerValue"/>
+
+    <EditText
+        android:id="@+id/editTimerValue"
+        android:inputType="number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:minHeight="48dp"
+        android:hint="@string/timerValueHint"
+        app:layout_constraintEnd_toEndOf="@id/buttonPlanNotify"
+        app:layout_constraintStart_toStartOf="@id/buttonPlanNotify"
+        app:layout_constraintBottom_toTopOf="@id/buttonPlanNotify"/>
+
+    <Button
+        android:id="@+id/buttonPlanNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/buttonPlanNotifyText"
+        />
+
+    <Button
+        android:id="@+id/buttonCancelNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="@id/buttonPlanNotify"
+        app:layout_constraintStart_toStartOf="@id/buttonPlanNotify"
+        app:layout_constraintTop_toBottomOf="@id/buttonPlanNotify"
+        android:text="@string/buttonCancelNotifyText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
