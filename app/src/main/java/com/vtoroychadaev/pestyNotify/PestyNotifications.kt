@@ -19,11 +19,11 @@ class NotifyWorker(private val context: Context, params: WorkerParameters) : Wor
     }
 
     fun showNotification(notifyText: String) {
-        val notificationId = 1
+        val notificationId = MainActivity.LAST_NOTIFY_WORK_TAG
 
         val builder = NotificationCompat.Builder(context, MainActivity.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_icon)
-            .setContentTitle("pestyRemainder")
+            .setContentTitle("pestyReminder")
             .setContentText(notifyText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
@@ -38,6 +38,11 @@ class NotifyWorker(private val context: Context, params: WorkerParameters) : Wor
 
         with(NotificationManagerCompat.from(context)) {
             notify(notificationId, builder.build())
+            if (MainActivity.LAST_NOTIFY_WORK_TAG == 0) {
+                //TODO: handle error
+                return
+            }
+            --MainActivity.LAST_NOTIFY_WORK_TAG
         }
     }
 }

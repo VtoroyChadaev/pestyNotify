@@ -21,7 +21,6 @@ import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-    val NOTIFY_WORK_TAG = "notifyWorkTag"
     var delay: Long = 30
     lateinit var buttonPlanNotify: Button
     lateinit var buttonCancelNotify: Button
@@ -29,7 +28,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var timerInp: EditText
 
     companion object {
-        const val CHANNEL_ID = "reminderNotificationChannel"
+        const val CHANNEL_ID = "Basic notifications"
+        var LAST_NOTIFY_WORK_TAG: Int = 0
     }
 
     private val requestPermissionLauncher =
@@ -55,12 +55,20 @@ class MainActivity : AppCompatActivity() {
         buttonPlanNotify = findViewById<Button>(R.id.buttonPlanNotify)
         buttonPlanNotify.setOnClickListener {
             askForPermissionAndStart()
+            reminderInp.setText("")
+            timerInp.setText("")
        }
 
         buttonCancelNotify = findViewById<Button>(R.id.buttonCancelNotify)
         buttonCancelNotify.setOnClickListener {
-            val workManager = WorkManager.getInstance(this)
-            workManager.cancelAllWorkByTag(NOTIFY_WORK_TAG)
+            if (LAST_NOTIFY_WORK_TAG == 0) {
+                Toast.makeText(this, "No reminders created", Toast.LENGTH_SHORT).show()
+            } else {
+                val workManager = WorkManager.getInstance(this)
+                workManager.cancelAllWorkByTag(LAST_NOTIFY_WORK_TAG.toString())
+                --LAST_NOTIFY_WORK_TAG
+                Toast.makeText(this, "Reminder cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -70,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
     private fun askForPermissionAndStart() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
@@ -92,11 +101,12 @@ class MainActivity : AppCompatActivity() {
 
         val constraints = Constraints.Builder().setRequiresBatteryNotLow(true).build()
 
+        LAST_NOTIFY_WORK_TAG++
         val delayedNotify = OneTimeWorkRequestBuilder<NotifyWorker>()
             .setInitialDelay(delay, TimeUnit.SECONDS)
             .setConstraints(constraints)
             .setInputData(workDataOf("REMINDER_TEXT" to reminderText))
-            .addTag(NOTIFY_WORK_TAG)
+            .addTag(LAST_NOTIFY_WORK_TAG.toString())
             .build()
 
         WorkManager.getInstance(this).enqueue(delayedNotify)
